@@ -2,44 +2,26 @@
 
 This is an indexer that listens for messages from a [Farcaster Hub](https://docs.farcaster.xyz/learn/architecture/hubs) and inserts relevant data into a postgres database.
 
-The most performant way to run this is to co-locate everything (hub, node app, postgres, redis) on the same machine. I recommend [Latitude](https://www.latitude.sh/r/673C7DB2) (referral code for $200 of free credits).
+The most performant way to run this is to co-locate everything (hub, node app, postgres, redis) on the same machine. 
 
 ## How to run
 
 Clone this repo
 
 ```bash
-git clone -b hubs https://github.com/gskril/farcaster-indexer.git
+mkdir db
 ```
 
-Install dependencies
+Docker
 
 ```bash
-yarn install
+docker-compose up -d
 ```
 
 Create a `.env` file with your hub, database, and redis connection details
 
 ```bash
 cp .env.example .env
-```
-
-Run the latest database migrations
-
-```bash
-yarn kysely:migrate
-```
-
-Run the indexer
-
-```bash
-# Recommended to get the full state. You only need to run this once.
-# Streaming will start after the backfill is complete.
-yarn run backfill
-
-# Ignores backfill and start streaming from the latest recorded event.
-# You should run this after one initial backfill.
-yarn start
 ```
 
 ## How it works

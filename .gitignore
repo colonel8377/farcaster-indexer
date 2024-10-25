@@ -6,3 +6,7 @@
 # Supabase
 **/supabase/.branches
 **/supabase/.temp
+/postgres-data
+/redis-data
+/db
+/backfill.log
