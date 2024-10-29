@@ -1,4 +1,4 @@
-Commond
+# Command
 
 mkdir db
 
