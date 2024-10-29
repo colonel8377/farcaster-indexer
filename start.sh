@@ -17,9 +17,9 @@ check_process() {
         return 1
     fi
 }
-
-# Start the process initially
+yarn
 yarn kysely:migrate
+# Start the process initially
 start_process
 
 # Monitor the process
@@ -27,7 +27,6 @@ while true; do
     sleep 60  # Check every 60 seconds
     if ! check_process; then
         echo "Restarting process..."
-        yarn kysely:migrate
         start_process
     fi
 done
