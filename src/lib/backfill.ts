@@ -1,4 +1,5 @@
 import { Job } from 'bullmq'
+import { writeFileSync } from 'fs'
 
 import { insertCasts } from '../api/cast.js'
 import { saveLatestEventId } from '../api/event.js'
@@ -47,12 +48,23 @@ export async function backfill({ maxFid }: { maxFid?: number | undefined }) {
 
   log.info('Starting backfill')
 
-  // Save the latest event ID so we can subscribe from there after backfill completes
+  // Save the latest event ID so we can subscribe rom there after backfill completes
   const latestEventId = makeLatestEventId()
   await saveLatestEventId(latestEventId)
   await addFidsToBackfillQueue(maxFid)
-  await getHubs()
-  // await getDbInfo()
+  await getHubs();
+
+  // Wait for all jobs to be completed
+  await new Promise<void>((resolve) => {
+    backfillWorker.on('drained', () => {
+      log.info('Backfill process completed.')
+      resolve(); // Signal that the backfill is done
+    });
+  });
+
+  // Create the flag file indicating that the backfill process has finished
+  log.info('Creating backfill completion flag...')
+  writeFileSync('/tmp/backfill_done', 'done')  // Backfill completes here
 }
 
 /**
