@@ -9,5 +9,5 @@
 /postgres-data
 /redis-data
 /db
-/backfill.log
+*.log
 /.idea

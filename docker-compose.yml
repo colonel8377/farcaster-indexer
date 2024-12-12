@@ -26,6 +26,7 @@ services:
           memory: 16384MB
     networks:
       - index-network
+
   index-redis:
     image: 'redis:7.2-alpine'
     restart: unless-stopped
@@ -47,6 +48,7 @@ services:
           memory: 16384MB
     networks:
       - index-network
+      
   index-app:
     build:
       context: .
